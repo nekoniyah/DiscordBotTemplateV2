@@ -28,6 +28,7 @@ export default TemplateEvent<"interactionCreate">(async (interaction) => {
   }
 
   if (interaction.isChatInputCommand()) {
+    const now = Date.now();
     const interactionFiles = readdirSync(
       path.join(interactionsFolderpath, "commands"),
     );
@@ -41,7 +42,7 @@ export default TemplateEvent<"interactionCreate">(async (interaction) => {
         path.join(interactionsFolderpath, "buttons", fpath)
       );
 
-      await module(interaction);
+      await module(interaction, { now });
     } else
       await interaction.reply({
         content: "> :x: Feature not implemented yet!",
