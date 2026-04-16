@@ -39,7 +39,7 @@ export default TemplateEvent<"interactionCreate">(async (interaction) => {
 
     if (fpath) {
       const { default: module } = await import(
-        path.join(interactionsFolderpath, "buttons", fpath)
+        path.join(interactionsFolderpath, "commands", fpath)
       );
 
       await module(interaction, { now });
@@ -61,7 +61,7 @@ export default TemplateEvent<"interactionCreate">(async (interaction) => {
 
     if (fpath) {
       const { default: module } = await import(
-        path.join(interactionsFolderpath, "buttons", fpath)
+        path.join(interactionsFolderpath, "selects", fpath)
       );
 
       await module(interaction);
@@ -83,7 +83,7 @@ export default TemplateEvent<"interactionCreate">(async (interaction) => {
 
     if (fpath) {
       const { default: module } = await import(
-        path.join(interactionsFolderpath, "buttons", fpath)
+        path.join(interactionsFolderpath, "modals", fpath)
       );
 
       await module(interaction);

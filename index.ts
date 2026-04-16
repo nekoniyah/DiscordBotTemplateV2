@@ -14,7 +14,7 @@ const events = await loadDirectoryList(eventsPath, eventsPath);
 
 (async () => {
   for (let key in events) {
-    for (let path in events[key]) {
+    for (let path of events[key]!) {
       const { default: event } = await import(path);
       client.on(key, event as TemplateEvent<keyof ClientEvents>);
     }
