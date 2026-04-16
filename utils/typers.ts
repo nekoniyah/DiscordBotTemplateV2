@@ -1,11 +1,18 @@
 import type { ClientEvents } from "discord.js";
 
-export type TemplateEvent<Name extends keyof ClientEvents> = (
-  listener: (...args: ClientEvents[Name]) => void | Promise<void>,
+export type ExtendedClientEvents<Name extends keyof ClientEvents> = [
+  ...ClientEvents[Name],
+  options?: {
+    [key: string]: number | string | boolean;
+  },
+];
+
+export type TemplateEventListener<Name extends keyof ClientEvents> = (
+  ...args: ExtendedClientEvents<Name>
 ) => void | Promise<void>;
 
 export function TemplateEvent<Name extends keyof ClientEvents>(
-  listener: (...args: ClientEvents[Name]) => void | Promise<void>,
+  listener: TemplateEventListener<Name>,
 ) {
   return listener;
 }
