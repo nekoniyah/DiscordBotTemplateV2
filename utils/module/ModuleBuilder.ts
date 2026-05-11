@@ -1,18 +1,27 @@
 import type { Client, ClientEvents, SlashCommandBuilder } from "discord.js";
 import { type TemplateEventListener } from "../typers";
-import { addEvent, addSlashCommand } from "./registers";
-import type db from "../db";
+import { addSlashCommand } from "./registers";
 import client from "../../client";
+import path from "path";
+import { existsSync } from "fs";
+import loadDirectoryList from "../loadDirectoryList";
 
-export class RegisterModule {}
+export default abstract class ModuleBuilder {
+  constructor() {
+    const eventsFolder = path.join(__dirname, "events");
 
-export default abstract class ModuleBuilder<
-  Dependencies extends { [key: string]: any } = {
-    client: Client;
-  },
-> {
-  constructor(public options: Dependencies & { client: Client }) {
-    this.options = options;
+    if (existsSync(eventsFolder)) {
+      (async () => {
+        const files = await loadDirectoryList(eventsFolder, eventsFolder);
+
+        for (let key in files) {
+          for (let path of files[key]!) {
+            const { default: exec } = await import(path);
+            client.on(key, exec);
+          }
+        }
+      })();
+    }
   }
 }
 

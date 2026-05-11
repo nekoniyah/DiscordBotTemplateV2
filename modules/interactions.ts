@@ -6,13 +6,8 @@ import {
 } from "discord.js";
 import ModuleBuilder, { Event } from "../utils/module/ModuleBuilder";
 import { getInteractions } from "../utils/module/registers";
-import type db from "../utils/db";
 
-export default class StartupModule extends ModuleBuilder {
-  constructor(options: { client: Client }) {
-    super(options);
-  }
-
+export default class InteractionModule extends ModuleBuilder {
   @Event("interactionCreate")
   async onInteractionCreate(interaction: Interaction<CacheType>) {
     if (interaction.user.bot) return;
